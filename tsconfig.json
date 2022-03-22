@@ -20,14 +20,13 @@
     "target": "es2017",
     "types": [ "node" ],
     "skipLibCheck": true,
-    "allowJs": true,
+    "allowJs": false,
     "typeRoots": [
       "./node_modules/@types",
       "./types"
     ]
   },
   "include": [
-    "src/*",
-    "src/packrat/*"
+    "src/*"
   ]
 }

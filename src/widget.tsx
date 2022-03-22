@@ -15,8 +15,7 @@ import DehazeOutlinedIcon from '@mui/icons-material/DehazeOutlined';
 import { ThemeProvider } from "@mui/material/styles";
 import ButtonProgram from './program'
 import FileList from './filelist'
-import webdsTheme from './webds_theme';
-
+import { WebDSService } from '@webds/service';
 import { green } from '@mui/material/colors';
 
 const PACKRAT_WIDTH=225
@@ -62,6 +61,7 @@ type SeverityType = 'error' | 'info' | 'success' | 'warning';
 export default function VerticalTabs(
     props: {
         onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+		service: WebDSService;
     }
 ) {
     const [packrat, setPackrat] = useState("3318382");
@@ -260,6 +260,8 @@ export default function VerticalTabs(
         }
     }
 
+	const webdsTheme = props.service.ui.getWebDSTheme();
+
     return (
         <div>
             <ThemeProvider theme={webdsTheme}>
@@ -343,7 +345,7 @@ export default function VerticalTabs(
                             />
                         }
                         <ButtonProgram title="Program" list={filelist} error={packratError}
-                            onStart={onStart} onProgress={onProgress} onMessage={onMessage} />
+                            onStart={onStart} onProgress={onProgress} onMessage={onMessage} service={props.service}/>
                     </Stack>
                 </Box>
             </ThemeProvider>
@@ -356,13 +358,16 @@ export default function VerticalTabs(
 * A Counter Lumino Widget that wraps a CounterComponent.
 */
 export class ShellWidget extends ReactWidget {
+	service: WebDSService | null = null;
+
     /**
     * Constructs a new CounterWidget.
     */
-    constructor() {
+    constructor(service: WebDSService) {
         super();
         this.addClass('content-widget');
         console.log("TabPanelUiWidget is created!!!");
+		this.service = service;
     }
 
     handleChangeFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -370,6 +375,6 @@ export class ShellWidget extends ReactWidget {
     }
 
     render(): JSX.Element {
-        return <VerticalTabs onFileChange={this.handleChangeFile} />;
+        return <VerticalTabs onFileChange={this.handleChangeFile} service={this.service!}/>;
     }
 }

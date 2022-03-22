@@ -3,9 +3,8 @@ import { requestAPI } from './handler';
 import { UserContext } from './context';
 
 import { Box, Typography, Button } from '@mui/material';
-import DownloadBlob, { BlobFile } from './packrat/packrat'
 import { ThemeProvider } from "@mui/material/styles";
-import webdsTheme from './webds_theme';
+import { WebDSService } from '@webds/service';
 
 
 interface ButtonProps {
@@ -19,6 +18,7 @@ interface ButtonProps {
     onStart: any;
     onProgress: any;
     onMessage: any;
+    service: WebDSService;
 }
 
 declare global {
@@ -163,33 +163,18 @@ export default function ButtonProgram(props: ButtonProps) {
     }
 
     const start_fetch = async (packrat: string): Promise<string | undefined> => {
-        const formData = new FormData();
 
         try {
             console.log(packrat);
-
-            let blob: BlobFile | undefined = DownloadBlob(packrat, "hex");
-
-            console.log(blob);
-            formData.append("blob", blob!.content, "PR" + packrat + ".hex");
-        } catch (e) {
-            console.log(e);
-            return Promise.reject(e);
-        }
-
-        try {
-            const reply = await requestAPI<any>('packrat', {
-                body: formData,
-                method: 'POST',
-            });
-
-            console.log(reply);
-
-            return Promise.resolve(reply);
-        } catch (e) {
-            return Promise.reject((e as Error).message);
+            await props.service.packrat.cache.addApplicationHex(Number(packrat!));
+            return Promise.resolve(packrat!);
+        } catch (error) {
+            console.error(error);
+            return Promise.reject(error);
         }
     }
+
+    const webdsTheme = props.service.ui.getWebDSTheme();
 
     return (
         <ThemeProvider theme={webdsTheme}>
