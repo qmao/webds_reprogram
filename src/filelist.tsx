@@ -42,7 +42,7 @@ export default function FileList(
             <RadioGroup aria-label="Hex File" name="select-hex" value={props.select} onChange={handleChange} >
             { props.list.map((value, index) => {
                 return (
-                    <Paper elevation={0} sx={(index % 2 === 1) ? { backgroundColor: '#FAFAFA' } : {}}>
+                    <Paper elevation={0} sx={(index % 2 === 1) ? { /*backgroundColor: '#FAFAFA'*/ } : {}}>
                         <ListItem
                             secondaryAction={
                                 <IconButton edge="end" aria-label="delete" onClick={() => props.onDelete(value, index)}>

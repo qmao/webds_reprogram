@@ -5,7 +5,7 @@ import { requestAPI } from './handler';
 
 import {
     TextField, Box, Stack, Divider, Paper, Avatar,
-    Button, Collapse, Alert, AlertTitle, Link
+    Button, Collapse, Alert, AlertTitle, Link, Typography
 } from '@mui/material';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -285,7 +285,7 @@ export default function VerticalTabs(
                         display: 'flex',
                         mt: 5
                     }}>
-                        <Button variant="text" onClick={handleClick}>
+                        <Button variant="text" onClick={handleClick} sx={{ pt: 1 }}>
                             <Avatar sx={{ bgcolor: webdsTheme.palette.primary.light }} variant="rounded">
                             {open ?
                                 <CloseIcon fontSize="large"/>
@@ -321,9 +321,9 @@ export default function VerticalTabs(
                         width: 245
                     }}>
                         <Divider>
-                            <Box sx={{ textAlign: 'center', m: 1, fontWeight: 600, fontSize: 16 }}>
+                            <Typography sx={{ m: 1, textAlign: 'center' }}>
                                 {open ? "Hex Files" : "Packrat"}
-                            </Box>
+                            </Typography>
                         </Divider>
 
                         {open ?
