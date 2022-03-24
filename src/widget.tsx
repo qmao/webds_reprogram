@@ -117,9 +117,6 @@ export default function VerticalTabs(
             if (packrat_number) {
                 setPackrat(packrat_number[0]);
             }
-            else {
-                onMessage('error', 'Cannot parsing packrat from file name', '');
-            }
         }
     }, [select]);
 
