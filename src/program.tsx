@@ -6,7 +6,6 @@ import { Box, Typography, Button } from '@mui/material';
 import { ThemeProvider } from "@mui/material/styles";
 import { WebDSService } from '@webds/service';
 
-
 interface ButtonProps {
     children?: React.ReactNode;
     index?: any;
@@ -82,13 +81,16 @@ export default function ButtonProgram(props: ButtonProps) {
         props.onStart(isStart);
 
         if (isStart) {
-            let cache = "PR" + context.packrat + ".hex"
-            let exist = props.list.includes(cache);
-            console.log(props.list);
-            console.log(cache);
-            console.log(exist);
 
-            if (!exist) {
+            let match = props.list.find((element: string) => {
+                if (element.includes(context.packrat)) {
+                    return true;
+                }
+            });
+
+            console.log(props.list);
+
+            if (!match) {
                 console.log("download hex from packrat server");
                 file = context.packrat;
                 start_fetch(file).then(res => {
@@ -100,7 +102,7 @@ export default function ButtonProgram(props: ButtonProps) {
                 })
             }
             else {
-                file = context.packrat + "/" + cache;
+                file = context.packrat + "/" + match;
                 if (file == "") {
                     setProgramStatus(false, false, "Please choose a HEX file");
                 }
