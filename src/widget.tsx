@@ -77,7 +77,6 @@ export default function VerticalTabs(
     const severityRef = useRef<SeverityType>('info');
     const resultRef = useRef("");
     const linkRef = React.useRef("");
-    const fileNameRef = React.useRef("");
 
     const context = useContext(UserContext);
 
@@ -102,7 +101,6 @@ export default function VerticalTabs(
         else {
             setPackratError(false);
             context.packrat = packrat;
-            console.log(context.packrat);
         }
     }, [packrat]);
 
@@ -114,9 +112,14 @@ export default function VerticalTabs(
 
     useEffect(() => {
         if (open) {
-            let file = select.split(".")[0].substr(2);
-            console.log("onFileSelect:", file);
-            setPackrat(file);
+            let regex = /(?<=PR)\d+/g;
+            let packrat_number = select.match(regex);
+            if (packrat_number) {
+                setPackrat(packrat_number[0]);
+            }
+            else {
+                onMessage('error', 'Cannot parsing packrat from file name', '');
+            }
         }
     }, [select]);
 
@@ -133,13 +136,13 @@ export default function VerticalTabs(
 
         if (event.currentTarget.files) {
             upload_file(event.currentTarget.files[0])
-                .then((file) => {
-                    console.log(file);
+                .then(() => {
+                    console.log("upload file done");
                     ////setLoading(false);
                 })
-                .catch(err => {
+                .catch(error => {
                     ////setLoading(false);
-                    alert(err)
+                    onMessage('error', error, '');
                 });
         }
     }
@@ -199,6 +202,7 @@ export default function VerticalTabs(
                 if (packrat == packratnum) {
                     if (list!.indexOf(filename) == -1) {
                         setPackrat("");
+                        setSelect("");
                     }
                 }
             });
@@ -275,7 +279,7 @@ export default function VerticalTabs(
             if (!packrat)
                 return Promise.reject('invalid file name');
             packratID = packrat![0]
-            fileName = 'PR' + packratID + '.hex';
+            fileName = 'PR' + packratID + '.ihex.hex';
 
             const formData = new FormData();
             formData.append("fileToUpload", file, fileName);
@@ -288,8 +292,7 @@ export default function VerticalTabs(
             console.error(`Error - POST /webds/packrat/${packratID}\n${error}`);
             return Promise.reject('Failed to upload blob to Packrat cache');
         }
-
-        return Promise.resolve('Packrat/Cache/' + packratID + '/' + fileName);
+        return Promise.resolve(fileName);
     }
 
     const upload_file = async (file: File) => {
@@ -297,12 +300,13 @@ export default function VerticalTabs(
 
         if (file) {
             try {
-                if (file.name.includes("-ihex"))
-                    fileNameRef.current = await upload_ihex(file);
+                let filename = '';
+                if (file.name.includes("ihex"))
+                    filename = await upload_ihex(file);
                 else
-                    fileNameRef.current = await upload_hex(file);
+                    filename = await upload_hex(file);
                 await get_lists();
-                setSelect(fileNameRef.current)
+                setSelect(filename)
             }
             catch (error) {
                 console.log(error);
@@ -369,7 +373,7 @@ export default function VerticalTabs(
                         flexDirection: 'column',
                         display: 'flex',
                         alignItems: "center",
-                        width: 245
+                        width: 275
                     }}>
                         <Divider>
                             <Typography sx={{ m: 1, textAlign: 'center' }}>
@@ -378,7 +382,7 @@ export default function VerticalTabs(
                         </Divider>
 
                         {open ?
-                            <Paper variant="outlined" sx={{ m: 0, p: 0/*, minWidth: 192, minHeight: 42*/}}>
+                            <Paper variant="outlined" sx={{ m: 0, p: 0, minWidth: 265, /*minHeight: 42*/}}>
                                 <FileList list={filelist} onDelete={onFileDelete} onSelect={onFileSelect} select={select}/>
                             </Paper>
                                 :

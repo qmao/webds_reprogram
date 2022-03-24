@@ -92,8 +92,7 @@ export default function ButtonProgram(props: ButtonProps) {
                 console.log("download hex from packrat server");
                 file = context.packrat;
                 start_fetch(file).then(res => {
-                    let filePath = file + "/PR" + file + '.hex';
-                    go(filePath);
+                    go(file);
                 })
                 .catch((error) => {
                     console.log(error, 'Promise error');
@@ -163,15 +162,28 @@ export default function ButtonProgram(props: ButtonProps) {
     }
 
     const start_fetch = async (packrat: string): Promise<string | undefined> => {
-
+        console.log(packrat);
+        let path = '';
         try {
-            console.log(packrat);
-            await props.service.packrat.cache.addApplicationHex(Number(packrat!));
-            return Promise.resolve(packrat!);
+            // fix me
+            // backend check device type
+            let files = await props.service.packrat.cache.addPackratFiles(['ihex'], Number(packrat!));
+            console.log(files);
+            if (files.length == 0) {
+                files = await props.service.packrat.cache.addPackratFiles(['hex'], Number(packrat!));
+                console.log(files);
+                if (files.length == 0) {
+                    return Promise.reject('Hex download failed');
+                }
+                path = packrat + "/PR" + packrat + '.hex';
+            } else {
+                path = packrat + "/PR" + packrat + '.ihex.hex';
+            }
         } catch (error) {
             console.error(error);
             return Promise.reject(error);
         }
+        return Promise.resolve(path);
     }
 
     const webdsTheme = props.service.ui.getWebDSTheme();
