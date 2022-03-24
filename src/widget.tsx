@@ -67,7 +67,7 @@ export default function VerticalTabs(
     const [packrat, setPackrat] = useState("3318382");
     const [packratError, setPackratError] = useState(false);
     const [open, setOpen] = useState(false);
-    const [filelist, setFileList] = useState([]);
+    const [filelist, setFileList] = useState<string[]>([]);
     const [select, setSelect] = useState("");
     const [start, setStart] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -77,11 +77,12 @@ export default function VerticalTabs(
     const severityRef = useRef<SeverityType>('info');
     const resultRef = useRef("");
     const linkRef = React.useRef("");
+    const fileNameRef = React.useRef("");
 
     const context = useContext(UserContext);
 
     const fetchData = async () => {
-        const data = await get_hex_list();
+        const data = await get_lists();
         console.log('data', data);
     };
 
@@ -131,7 +132,7 @@ export default function VerticalTabs(
         console.log(event);
 
         if (event.currentTarget.files) {
-            upload_hex(event.currentTarget.files[0])
+            upload_file(event.currentTarget.files[0])
                 .then((file) => {
                     console.log(file);
                     ////setLoading(false);
@@ -194,7 +195,7 @@ export default function VerticalTabs(
                 method: 'DELETE',
             });
             console.log(reply);
-            await get_hex_list().then(list => {
+            await get_lists().then(list => {
                 if (packrat == packratnum) {
                     if (list!.indexOf(filename) == -1) {
                         setPackrat("");
@@ -210,52 +211,102 @@ export default function VerticalTabs(
         }
     }
 
-    const get_hex_list = async (): Promise<string[] | undefined> => {
+
+    const get_list = async (exetension: string): Promise<string[] | undefined> => {
         try {
-            const reply = await requestAPI<any>('packrat?extension=hex', {
+
+            const reply = await requestAPI<any>('packrat?extension=' + exetension, {
                 method: 'GET',
             });
             console.log(reply);
 
-            let hexlist = reply["filelist"].map((value: string) => {
+            let list = reply["filelist"].map((value: string) => {
                 let res = value.split("/");
                 return res[1];
             });
-
-            setFileList(hexlist);
-            return hexlist;
+            return Promise.resolve(list);
         } catch (error) {
             console.log(error);
-            setFileList([]);
-            return error.message
+            return Promise.reject(error.message);
         }
     }
 
-    const upload_hex = async (file: File): Promise<string | undefined> => {
-        console.log("upload_hex:", file);
+    const get_lists = async (): Promise<string[] | undefined> => {
+        try {
+            let list = await get_list("hex");
 
-        if (file) {
-            ////setLoading(true);
+            setFileList(list!);
+            return Promise.resolve(list);
+        } catch (error) {
+            console.log(error);
+            setFileList([]);
+            return Promise.reject(error.message);
+        }
+    }
+
+    const upload_hex = async (file: File): Promise<string> => {
+        const formData = new FormData();
+        formData.append("fileToUpload", file);
+
+        try {
+            const reply = await requestAPI<any>('packrat', {
+                body: formData,
+                method: 'POST',
+            });
+
+            console.log(reply);
+
+            let filename = reply['filename'];
+            return Promise.resolve(filename);
+        } catch (error) {
+            console.log(error);
+            console.log(error.message);
+            return Promise.reject(error.message);
+        }
+    }
+
+    const upload_ihex = async (file: File): Promise<string> => {
+        const regex = /(?<=PR)\d+/g;
+        const packrat = file.name.match(regex);
+        let fileName = '';
+        let packratID = '';
+
+        try {
+            if (!packrat)
+                return Promise.reject('invalid file name');
+            packratID = packrat![0]
+            fileName = 'PR' + packratID + '.hex';
 
             const formData = new FormData();
-            formData.append("fileToUpload", file);
+            formData.append("fileToUpload", file, fileName);
 
-            console.log(formData);
+            await requestAPI<any>('packrat/' + packratID, {
+                body: formData,
+                method: 'POST'
+            });
+        } catch (error) {
+            console.error(`Error - POST /webds/packrat/${packratID}\n${error}`);
+            return Promise.reject('Failed to upload blob to Packrat cache');
+        }
+
+        return Promise.resolve('Packrat/Cache/' + packratID + '/' + fileName);
+    }
+
+    const upload_file = async (file: File) => {
+        console.log("upload_file:", file);
+
+        if (file) {
             try {
-                const reply = await requestAPI<any>('packrat', {
-                    body: formData,
-                    method: 'POST',
-                });
-
-                console.log(reply);
-
-                let filename = reply['filename'];
-                get_hex_list().then(() => { setSelect(filename) });
-                return Promise.resolve(filename);
-            } catch (error) {
+                if (file.name.includes("-ihex"))
+                    fileNameRef.current = await upload_ihex(file);
+                else
+                    fileNameRef.current = await upload_hex(file);
+                await get_lists();
+                setSelect(fileNameRef.current)
+            }
+            catch (error) {
                 console.log(error);
-                console.log(error.message);
-                return Promise.reject(error.message);
+                onMessage('error', error, '')
             }
         }
     }
