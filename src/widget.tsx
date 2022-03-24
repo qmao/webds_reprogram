@@ -263,7 +263,7 @@ export default function VerticalTabs(
 	const webdsTheme = props.service.ui.getWebDSTheme();
 
     return (
-        <div>
+        <div className='jp-webds-widget-body'>
             <ThemeProvider theme={webdsTheme}>
                 <Collapse in={isAlert}>
                     <Alert severity={severityRef.current} onClose={() => setAlert(false)}>
@@ -365,7 +365,7 @@ export class ShellWidget extends ReactWidget {
     */
     constructor(service: WebDSService) {
         super();
-        this.addClass('content-widget');
+        this.addClass('jp-webds-widget');
         console.log("TabPanelUiWidget is created!!!");
 		this.service = service;
     }
