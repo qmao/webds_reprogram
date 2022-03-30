@@ -246,6 +246,7 @@ export default function VerticalTabs(
     }
 
     const upload_hex = async (file: File): Promise<string> => {
+        console.log("upload hex file:", file);
         const formData = new FormData();
         formData.append("fileToUpload", file);
 
@@ -267,6 +268,7 @@ export default function VerticalTabs(
     }
 
     const upload_ihex = async (file: File): Promise<string> => {
+        console.log("upload ihex file:", file);
         const regex = /(?<=PR)\d+/g;
         const packrat = file.name.match(regex);
         let fileName = '';
@@ -298,7 +300,7 @@ export default function VerticalTabs(
         if (file) {
             try {
                 let filename = '';
-                if (file.name.includes("ihex"))
+                if (file.name.includes("ihex") || file.name.includes("iHex") || file.name.includes("singlechip"))
                     filename = await upload_ihex(file);
                 else
                     filename = await upload_hex(file);
