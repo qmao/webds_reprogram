@@ -94,7 +94,7 @@ export default function ButtonProgram(props: ButtonProps) {
                 console.log("download hex from packrat server");
                 file = context.packrat;
                 start_fetch(file).then(res => {
-                    go(file);
+                    go(res);
                 })
                 .catch((error) => {
                     console.log(error, 'Promise error');
@@ -163,7 +163,7 @@ export default function ButtonProgram(props: ButtonProps) {
         }
     }
 
-    const start_fetch = async (packrat: string): Promise<string | undefined> => {
+    const start_fetch = async (packrat: string): Promise<string> => {
         console.log(packrat);
         let path = '';
         try {
