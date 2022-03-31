@@ -54,7 +54,7 @@
     "@material-ui/core": "^5.0.0-beta.5",
     "@mui/icons-material": "^5.2.1",
     "@mui/material": "^5.2.3",
-	"@webds/service": "file:../webds_service"
+    "@webds/service": "file:../webds_service"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.1.0",
@@ -80,7 +80,7 @@
     "extension": true,
     "outputDir": "webds_reprogram/labextension",
     "schemaDir": "schema",
-	"sharedPackages": {
+    "sharedPackages": {
       "@webds/service": {
         "bundled": false,
         "singleton": true
