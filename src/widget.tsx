@@ -112,10 +112,10 @@ export default function VerticalTabs(
 
     useEffect(() => {
         if (open) {
-            let regex = /(?<=PR)\d+/g;
+            let regex = /PR\d+/g;
             let packrat_number = select.match(regex);
             if (packrat_number) {
-                setPackrat(packrat_number[0]);
+                setPackrat(packrat_number[0].substr(2));
             }
         }
     }, [select]);
@@ -269,7 +269,7 @@ export default function VerticalTabs(
 
     const upload_ihex = async (file: File): Promise<string> => {
         console.log("upload ihex file:", file);
-        const regex = /(?<=PR)\d+/g;
+        const regex = /PR\d+/g;
         const packrat = file.name.match(regex);
         let fileName = '';
         let packratID = '';
@@ -277,7 +277,7 @@ export default function VerticalTabs(
         try {
             if (!packrat)
                 return Promise.reject('invalid file name');
-            packratID = packrat![0]
+            packratID = packrat![0].substr(2)
             fileName = 'PR' + packratID + '.ihex.hex';
 
             const formData = new FormData();
