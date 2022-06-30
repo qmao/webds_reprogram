@@ -439,7 +439,7 @@ export default function VerticalTabs(
                     sx={{
                         position: "absolute",
                         top: "50%",
-                        left: "8px",
+                        left: "16px",
                         transform: "translate(0%, -50%)"
                     }}
                 >
