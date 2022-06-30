@@ -331,7 +331,7 @@ export default function VerticalTabs(
                     direction="row"
                     justifyContent="center"
                     alignItems="flex-start"
-                    sx={{mr: 8}}
+                    sx={{ mr: 8, py: 3}}
                 >
                     <Stack spacing={1}
                         direction="column"
@@ -434,19 +434,6 @@ export default function VerticalTabs(
                 >
                     Erase & Program
           </Typography>
-                <Button
-                    variant="text"
-                    sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "16px",
-                        transform: "translate(0%, -50%)"
-                    }}
-                >
-                    <Typography variant="body2" sx={{ textDecoration: "underline" }}>
-                        Help
-            </Typography>
-                </Button>
             </Box>
 
             <Stack
@@ -457,7 +444,6 @@ export default function VerticalTabs(
                 sx={{
                     width: WIDTH + "px",
                     bgcolor: "section.main",
-                    py: 3
                 }}
             >
                     {ShowContent()}
