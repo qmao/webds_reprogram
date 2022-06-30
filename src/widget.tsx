@@ -327,16 +327,16 @@ export default function VerticalTabs(
                     </Alert>
                 </Collapse>
 
-                <Box sx={{
-                    flexDirection: 'row',
-                    display: 'flex',
-                    mr:8
-                }}>
-                    <Stack spacing={1} sx={{
-                        flexDirection: 'column',
-                        display: 'flex',
-                        mt: 5
-                    }}>
+                <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="flex-start"
+                    sx={{mr: 8}}
+                >
+                    <Stack spacing={1}
+                        direction="column"
+                        justifyContent="flex-start"
+                        sx={{ mt: 5 }}>
                         <Button variant="text" onClick={handleClick} sx={{ pt: 1 }}>
                             <Avatar sx={{ bgcolor: webdsTheme.palette.primary.light }} variant="rounded">
                                 {open ?
@@ -397,7 +397,7 @@ export default function VerticalTabs(
                                 />
                         }
                     </Stack>
-                </Box>
+                </Stack>
             </div>
         );
     }
@@ -450,9 +450,10 @@ export default function VerticalTabs(
             </Box>
 
             <Stack
-                direction="row"
+                direction="column"
                 justifyContent="center"
-                alignItems="center"
+                alignItems="stretch"
+
                 sx={{
                     width: WIDTH + "px",
                     bgcolor: "section.main",
