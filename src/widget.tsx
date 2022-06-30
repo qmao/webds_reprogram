@@ -316,9 +316,9 @@ export default function VerticalTabs(
 
 	const webdsTheme = props.service.ui.getWebDSTheme();
 
-    return (
-        <div className='jp-webds-widget-body'>
-            <ThemeProvider theme={webdsTheme}>
+    function ShowContent() {
+        return (
+            <div>
                 <Collapse in={isAlert}>
                     <Alert severity={severityRef.current} onClose={() => setAlert(false)}>
                         <AlertTitle> {resultRef.current} </AlertTitle>
@@ -330,9 +330,7 @@ export default function VerticalTabs(
                 <Box sx={{
                     flexDirection: 'row',
                     display: 'flex',
-                    justifyContent: 'center',
-                    //alignItems: "center",
-                    mt: 6
+                    mr:8
                 }}>
                     <Stack spacing={1} sx={{
                         flexDirection: 'column',
@@ -341,30 +339,30 @@ export default function VerticalTabs(
                     }}>
                         <Button variant="text" onClick={handleClick} sx={{ pt: 1 }}>
                             <Avatar sx={{ bgcolor: webdsTheme.palette.primary.light }} variant="rounded">
-                            {open ?
-                                <CloseIcon fontSize="large"/>
-                                :
-                                <DehazeOutlinedIcon fontSize="large"/>
-                            }
+                                {open ?
+                                    <CloseIcon fontSize="large" />
+                                    :
+                                    <DehazeOutlinedIcon fontSize="large" />
+                                }
                             </Avatar>
                         </Button>
                         {open &&
-                        <div>
-                            <input
-                                accept=".hex"
-                                id="icon-button-hex"
-                                onChange={handlFileChange}
-                                type="file"
-                                hidden
-                            />
-                            <label htmlFor="icon-button-hex">
-                                <Button variant="text" onClick={handleUpload} component="span">
-                                    <Avatar sx={{ bgcolor: webdsTheme.palette.primary.light }} variant="rounded">
-                                        <CloudUploadIcon fontSize="large"/>
-                                    </Avatar>
-                                </Button>
-                            </label>
-                        </div>
+                            <div>
+                                <input
+                                    accept=".hex"
+                                    id="icon-button-hex"
+                                    onChange={handlFileChange}
+                                    type="file"
+                                    hidden
+                                />
+                                <label htmlFor="icon-button-hex">
+                                    <Button variant="text" onClick={handleUpload} component="span">
+                                        <Avatar sx={{ bgcolor: webdsTheme.palette.primary.light }} variant="rounded">
+                                            <CloudUploadIcon fontSize="large" />
+                                        </Avatar>
+                                    </Button>
+                                </label>
+                            </div>
                         }
                     </Stack>
 
@@ -381,27 +379,110 @@ export default function VerticalTabs(
                         </Divider>
 
                         {open ?
-                            <Paper variant="outlined" sx={{ m: 0, p: 0, minWidth: 265, /*minHeight: 42*/}}>
-                                <FileList list={filelist} onDelete={onFileDelete} onSelect={onFileSelect} select={select}/>
+                            <Paper variant="outlined" sx={{ m: 0, p: 0, minWidth: 265, /*minHeight: 42*/ }}>
+                                <FileList list={filelist} onDelete={onFileDelete} onSelect={onFileSelect} select={select} />
                             </Paper>
+                            :
+                            start ?
+                                <TextFieldWithProgress packrat={packrat} progress={progress} />
                                 :
-                            start ? 
-                            <TextFieldWithProgress packrat={packrat} progress={progress}/>
-                                :
-                            <TextField id="filled-basic"
-                                value={packrat}
-                                onChange={(e) => setPackrat(e.target.value)}
-                                error={packratError}
-                                size="small"
-                                sx={{
-                                    width: PACKRAT_WIDTH,
-                                }}
-                            />
+                                <TextField id="filled-basic"
+                                    value={packrat}
+                                    onChange={(e) => setPackrat(e.target.value)}
+                                    error={packratError}
+                                    size="small"
+                                    sx={{
+                                        width: PACKRAT_WIDTH,
+                                    }}
+                                />
                         }
-                        <ButtonProgram title="Program" list={filelist} error={packratError}
-                            onStart={onStart} onProgress={onProgress} onMessage={onMessage} service={props.service}/>
                     </Stack>
                 </Box>
+            </div>
+        );
+    }
+
+    function ShowControl() {
+        return (
+            <ButtonProgram title="Program" list={filelist} error={packratError}
+                    onStart={onStart} onProgress={onProgress} onMessage={onMessage} service={props.service} />
+        );
+    }
+
+    const WIDTH = 800;
+    const HEIGHT_TITLE = 70;
+
+    function showAll() {
+    return (
+        <Stack spacing={2}>
+            <Box
+                sx={{
+                    width: WIDTH + "px",
+                    height: HEIGHT_TITLE + "px",
+                    position: "relative",
+                    bgcolor: "section.main"
+                }}
+            >
+                <Typography
+                    variant="h5"
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)"
+                    }}
+                >
+                    Erase & Program
+          </Typography>
+                <Button
+                    variant="text"
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "8px",
+                        transform: "translate(0%, -50%)"
+                    }}
+                >
+                    <Typography variant="body2" sx={{ textDecoration: "underline" }}>
+                        Help
+            </Typography>
+                </Button>
+            </Box>
+
+            <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                    width: WIDTH + "px",
+                    bgcolor: "section.main",
+                    py: 3
+                }}
+            >
+                    {ShowContent()}
+            </Stack>
+            <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                    width: WIDTH + "px",
+                    bgcolor: "section.main",
+                    py: 1,
+                }}
+            >
+                    {ShowControl()}
+            </Stack>
+        </Stack>
+
+    );
+}
+
+
+    return (
+        <div className='jp-webds-widget-body'>
+            <ThemeProvider theme={webdsTheme}>
+                {showAll()}
             </ThemeProvider>
         </div>
     );

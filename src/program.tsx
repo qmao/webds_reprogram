@@ -187,11 +187,12 @@ export default function ButtonProgram(props: ButtonProps) {
 
     return (
         <ThemeProvider theme={webdsTheme}>
-            <div {...other}>
-                <Box sx={{
+            <Box sx={{
                     display: 'flex',
-                    flexDirection: 'row-reverse'
-                }}>
+                    flexDirection: 'row-reverse',
+                    mb: 1
+            }}>
+                <div {...other}>
                     <Button disabled={disable || error}
                         color="primary"
                         variant="contained"
@@ -209,8 +210,8 @@ export default function ButtonProgram(props: ButtonProps) {
                         }
                         { title }
                     </Button>
-                </Box>
-            </div>
+                </div>
+            </Box>
         </ThemeProvider>
     );
 }
