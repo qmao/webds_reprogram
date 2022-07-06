@@ -18,13 +18,8 @@
     "strict": true,
     "strictNullChecks": true,
     "target": "es2017",
-    "types": [ "node" ],
-    "skipLibCheck": true,
-    "allowJs": false,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ]
+    "types": [],
+    "skipLibCheck": true
   },
   "include": [
     "src/*"
