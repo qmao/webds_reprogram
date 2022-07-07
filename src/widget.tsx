@@ -190,10 +190,8 @@ export default function VerticalTabs(
         console.log(dataToSend);
 
         try {
-            const reply = await requestAPI<any>('packrat/' + packratnum, {
-                body: JSON.stringify(dataToSend),
-                method: 'DELETE',
-            });
+            const url = `packrat/${packratnum}/${filename}`;
+            const reply = await requestAPI<any>(url, {method: 'DELETE'});
             console.log(reply);
             await get_lists().then(list => {
                 if (packrat == packratnum) {

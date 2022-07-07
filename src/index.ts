@@ -4,8 +4,6 @@ import {
   ILayoutRestorer
 } from '@jupyterlab/application';
 
-import { ISettingRegistry } from '@jupyterlab/settingregistry';
-
 import { WidgetTracker } from '@jupyterlab/apputils';
 
 import { ILauncher } from '@jupyterlab/launcher';
@@ -29,29 +27,13 @@ namespace CommandIDs {
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'reprogram:plugin',
   autoStart: true,
-  optional: [ISettingRegistry],
   requires: [ILauncher, ILayoutRestorer, WebDSService],
   activate: (
     app: JupyterFrontEnd,
     launcher: ILauncher,
     restorer: ILayoutRestorer,
-	service: WebDSService,
-    settingRegistry: ISettingRegistry | null) => {
+	service: WebDSService) => {
     console.log('JupyterLab extension reprogram is activated!');
-
-    if (settingRegistry) {
-        console.log(settingRegistry);
-        /*
-        settingRegistry
-        .load(plugin.id)
-        .then(settings => {
-          console.log('reprogram settings loaded:', settings.composite);
-        })
-        .catch(reason => {
-          console.error('Failed to load settings for reprogram.', reason);
-        });
-        */
-    }
 
     let widget: WebDSWidget;
     const { commands, shell } = app;
