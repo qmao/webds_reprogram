@@ -18,7 +18,8 @@ import FileList from './filelist'
 import { WebDSService } from '@webds/service';
 import { green } from '@mui/material/colors';
 
-const PACKRAT_WIDTH=225
+const PACKRAT_WIDTH = 225;
+const HEIGHT_CONTROLS = 100;
 
 interface TextFieldWithProgressProps {
     packrat: string;
@@ -329,7 +330,7 @@ export default function VerticalTabs(
                     direction="row"
                     justifyContent="center"
                     alignItems="flex-start"
-                    sx={{ mr: 8, py: 3}}
+                    sx={{ mr: 8, mb: 4, py: 3}}
                 >
                     <Stack spacing={1}
                         direction="column"
@@ -452,8 +453,8 @@ export default function VerticalTabs(
                 alignItems="center"
                 sx={{
                     width: WIDTH + "px",
+                    minHeight: HEIGHT_CONTROLS + "px",
                     bgcolor: "section.main",
-                    py: 1,
                 }}
             >
                     {ShowControl()}
