@@ -38,7 +38,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     let widget: WebDSWidget;
     const { commands, shell } = app;
     const command = CommandIDs.reprogram;
-    const category = 'WebDS';
+    const category = 'Touch - Bootstrapping';
     const extension_string = 'Erase and Program';
 
 
@@ -70,7 +70,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // Add launcher
     launcher.add({
       command: command,
-      category: category
+      category: category,
+      rank: 10
     });
 
     let tracker = new WidgetTracker<WebDSWidget>({ namespace: 'webds_reprogram' });
