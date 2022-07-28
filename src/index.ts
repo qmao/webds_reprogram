@@ -38,7 +38,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     let widget: WebDSWidget;
     const { commands, shell } = app;
     const command = CommandIDs.reprogram;
-    const category = 'Touch - Bootstrapping';
+    const category = 'Firmware Install';
     const extension_string = 'Erase and Program';
 
 
