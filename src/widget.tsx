@@ -4,7 +4,7 @@ import { UserContext } from './context';
 import { requestAPI } from './handler';
 
 import {
-    TextField, Box, Stack, Divider, Paper, Avatar,
+    TextField, Box, Stack, Paper, Avatar,
     Button, Collapse, Alert, AlertTitle, Link, Typography
 } from '@mui/material';
 
