@@ -14,11 +14,13 @@ import { extensionProgramIcon } from './icons';
 
 import { WebDSService, WebDSWidget } from '@webds/service';
 
-/**
- * The command IDs used by the server extension plugin.
- */
-namespace CommandIDs {
-  export const reprogram = 'webds:reprogram';
+namespace Attributes {
+  export const command = "webds_reprogram:open";
+  export const id = "webds_reprogram_widget";
+  export const label = "Erase and Program";
+  export const caption = "Erase and Program";
+  export const category = 'Firmware Install';
+  export const rank = 10;
 }
 
 /**
@@ -37,22 +39,19 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
     let widget: WebDSWidget;
     const { commands, shell } = app;
-    const command = CommandIDs.reprogram;
-    const category = 'Firmware Install';
-    const extension_string = 'Erase and Program';
-
+    const command = Attributes.command;
 
     commands.addCommand(command, {
-      label: extension_string,
-      caption: extension_string,
+      label: Attributes.label,
+      caption: Attributes.caption,
 	  icon: extensionProgramIcon,
       execute: () => {
         if (!widget || widget.isDisposed) {
-          let content = new ShellWidget(service);
+          let content = new ShellWidget(Attributes.id, service);
 
           widget = new WebDSWidget<ShellWidget>({ content });
-          widget.id = 'erase_and_program';
-          widget.title.label = extension_string;
+          widget.id = Attributes.id;
+          widget.title.label = Attributes.label;
           widget.title.closable = true;
           widget.title.icon = extensionProgramIcon;
         }
@@ -70,12 +69,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // Add launcher
     launcher.add({
       command: command,
-      category: category,
-      rank: 10
+      category: Attributes.category,
+      rank: Attributes.rank
     });
 
-    let tracker = new WidgetTracker<WebDSWidget>({ namespace: 'webds_reprogram' });
-    restorer.restore(tracker, { command, name: () => 'webds_reprogram' });
+    let tracker = new WidgetTracker<WebDSWidget>({ namespace: Attributes.id });
+    restorer.restore(tracker, { command, name: () => Attributes.id });
   }
 };
 

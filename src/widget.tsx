@@ -61,7 +61,6 @@ type SeverityType = 'error' | 'info' | 'success' | 'warning';
 
 export default function VerticalTabs(
     props: {
-        onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 		service: WebDSService;
     }
 ) {
@@ -481,22 +480,25 @@ export default function VerticalTabs(
 */
 export class ShellWidget extends ReactWidget {
 	service: WebDSService | null = null;
-
+    id: string;
     /**
     * Constructs a new CounterWidget.
     */
-    constructor(service: WebDSService) {
+    constructor(id: string, service: WebDSService) {
         super();
+        this.id = id;
         this.addClass('jp-webds-widget');
         console.log("TabPanelUiWidget is created!!!");
 		this.service = service;
     }
 
-    handleChangeFile(e: React.ChangeEvent<HTMLInputElement>) {
-        console.log(e.currentTarget.files);
-    }
-
     render(): JSX.Element {
-        return <VerticalTabs onFileChange={this.handleChangeFile} service={this.service!}/>;
+        return (
+            <div id={this.id + "_container"} className="jp-webds-widget-container">
+                <div id={this.id + "_content"} className="jp-webds-widget">
+                    <VerticalTabs service={this.service!} />
+                </div>
+            </div>
+        );
     }
 }
