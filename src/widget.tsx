@@ -371,11 +371,11 @@ export default function VerticalTabs(
                         alignItems: "center",
                         width: 275
                     }}>
-                        <Divider>
+                        <Paper elevation={0} sx={{ bgcolor: 'transparent' }}>
                             <Typography sx={{ m: 1, textAlign: 'center' }}>
                                 {open ? "Hex Files" : "Packrat"}
                             </Typography>
-                        </Divider>
+                        </Paper>
 
                         {open ?
                             <Paper variant="outlined" sx={{ m: 0, p: 0, minWidth: 265, /*minHeight: 42*/ }}>
@@ -414,7 +414,8 @@ export default function VerticalTabs(
     function showAll() {
     return (
         <Stack spacing={2}>
-            <Box
+            <Paper
+                elevation={0}
                 sx={{
                     width: WIDTH + "px",
                     height: HEIGHT_TITLE + "px",
@@ -432,8 +433,8 @@ export default function VerticalTabs(
                     }}
                 >
                     Erase & Program
-          </Typography>
-            </Box>
+                </Typography>
+            </Paper>
 
             <Stack
                 direction="column"
