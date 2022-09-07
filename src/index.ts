@@ -35,7 +35,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
     launcher: ILauncher,
     restorer: ILayoutRestorer,
 	service: WebDSService) => {
-    console.log('JupyterLab extension reprogram is activated!');
+
+    if (service.pinormos.getOSInfo().current.version.endsWith("E")) {
+      return;
+    } else {
+      console.log('JupyterLab extension reprogram is activated!');
+    }
 
     let widget: WebDSWidget;
     const { commands, shell } = app;
