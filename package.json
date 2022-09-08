@@ -46,12 +46,13 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@emotion/react": "~11.7.0",
-    "@emotion/styled": "~11.6.0",
-    "@jupyterlab/application": "^3.1.12",
-    "@jupyterlab/launcher": "^3.1.12",
-    "@mui/icons-material": "~5.5.0",
-    "@mui/material": "~5.5.0",
+    "@emotion/react": "11.7.1",
+    "@emotion/styled": "11.6.0",
+    "@jupyterlab/application": "3.4.5",
+    "@jupyterlab/apputils": "3.4.5",
+    "@jupyterlab/launcher": "3.4.5",
+    "@mui/icons-material": "5.5.1",
+    "@mui/material": "5.5.3",
     "@webds/service": "file:../webds_service"
   },
   "devDependencies": {
