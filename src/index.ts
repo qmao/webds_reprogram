@@ -30,7 +30,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
   id: 'reprogram:plugin',
   autoStart: true,
   requires: [ILauncher, ILayoutRestorer, WebDSService],
-  activate: (
+  activate: async (
     app: JupyterFrontEnd,
     launcher: ILauncher,
     restorer: ILayoutRestorer,
@@ -41,6 +41,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
     } else {
       console.log('JupyterLab extension reprogram is activated!');
     }
+
+    await service.initialized;
 
     let widget: WebDSWidget;
     const { commands, shell } = app;
