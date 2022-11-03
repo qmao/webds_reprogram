@@ -18,8 +18,12 @@ import FileList from './filelist'
 import { WebDSService } from '@webds/service';
 import { green } from '@mui/material/colors';
 
+import { Canvas } from "./widget/mui_extensions/Canvas";
+import { Content } from "./widget/mui_extensions/Content";
+import { Controls } from "./widget/mui_extensions/Controls";
+
 const PACKRAT_WIDTH = 225;
-const HEIGHT_CONTROLS = 100;
+
 
 interface TextFieldWithProgressProps {
     packrat: string;
@@ -407,63 +411,18 @@ export default function VerticalTabs(
         );
     }
 
-    const WIDTH = 800;
-    const HEIGHT_TITLE = 70;
-
     function showAll() {
-    return (
-        <Stack spacing={2}>
-            <Paper
-                elevation={0}
-                sx={{
-                    width: WIDTH + "px",
-                    height: HEIGHT_TITLE + "px",
-                    position: "relative",
-                    bgcolor: "section.main"
-                }}
-            >
-                <Typography
-                    variant="h5"
-                    sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)"
-                    }}
-                >
-                    Erase & Program
-                </Typography>
-            </Paper>
-
-            <Stack
-                direction="column"
-                justifyContent="center"
-                alignItems="stretch"
-
-                sx={{
-                    width: WIDTH + "px",
-                    bgcolor: "section.main",
-                }}
-            >
+        return (
+            <Canvas title="Erase & Program">
+                <Content>
                     {ShowContent()}
-            </Stack>
-            <Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                sx={{
-                    width: WIDTH + "px",
-                    minHeight: HEIGHT_CONTROLS + "px",
-                    bgcolor: "section.main",
-                }}
-            >
+                </Content>
+                <Controls>
                     {ShowControl()}
-            </Stack>
-        </Stack>
-
-    );
-}
-
+                </Controls>
+            </Canvas>
+        );
+    }
 
     return (
         <div className='jp-webds-widget-body'>
