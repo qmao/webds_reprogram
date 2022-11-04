@@ -2,16 +2,11 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import { requestAPI } from './handler';
 import { UserContext } from './context';
 
-import { Box, Typography, Button } from '@mui/material';
-import { ThemeProvider } from "@mui/material/styles";
+import { Typography, Button } from '@mui/material';
 import { WebDSService } from '@webds/service';
 
 interface ButtonProps {
-    children?: React.ReactNode;
-    index?: any;
-    value?: any;
     title?: any;
-    alert?: any;
     error: any;
     list: any;
     onStart: any;
@@ -26,7 +21,7 @@ declare global {
 
 
 export default function ButtonProgram(props: ButtonProps) {
-    const { children, value, index, title, alert, error, list, onStart, onProgress, onMessage, ...other } = props;
+    const {title, error, onMessage } = props;
     const [disable, setDisable] = useState(false);
     const [progress, setProgress] = React.useState(0);
     const [isStart, setStart] = React.useState(false);
@@ -183,36 +178,24 @@ export default function ButtonProgram(props: ButtonProps) {
         return Promise.resolve("Hex file not found");
     }
 
-    const webdsTheme = props.service.ui.getWebDSTheme();
-
     return (
-        <ThemeProvider theme={webdsTheme}>
-            <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'row-reverse',
-                    mb: 1
-            }}>
-                <div {...other}>
-                    <Button disabled={disable || error}
-                        color="primary"
-                        variant="contained"
-                        onClick={() => setStart(true)}
-                        sx={{ width: 150, mt: 1 }}>
-                        { isStart &&
-                        <Typography
-                            variant="caption"
-                            component="div"
-                            color="text.secondary"
-                            sx={{mr:1}}
-                        >
-                        {`${Math.round(progress)}%`}
-                        </Typography>
-                        }
-                        { title }
-                    </Button>
-                </div>
-            </Box>
-        </ThemeProvider>
+        <Button disabled={disable || error}
+            color="primary"
+            variant="contained"
+            onClick={() => setStart(true)}
+            sx={{ width: 150 }}>
+            { isStart &&
+            <Typography
+                variant="caption"
+                component="div"
+                color="text.secondary"
+                sx={{mr:1}}
+            >
+            {`${Math.round(progress)}%`}
+            </Typography>
+            }
+            { title }
+        </Button>
     );
 }
 

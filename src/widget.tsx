@@ -406,7 +406,7 @@ export default function VerticalTabs(
 
     function ShowControl() {
         return (
-            <ButtonProgram title="Program" list={filelist} error={packratError}
+                <ButtonProgram title="Program" list={filelist} error={packratError}
                     onStart={onStart} onProgress={onProgress} onMessage={onMessage} service={props.service} />
         );
     }
@@ -417,7 +417,14 @@ export default function VerticalTabs(
                 <Content>
                     {ShowContent()}
                 </Content>
-                <Controls>
+                <Controls
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                >
                     {ShowControl()}
                 </Controls>
             </Canvas>
