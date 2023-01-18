@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { requestAPI } from './handler';
+import { requestAPI, webdsService } from './local_exports';
 import { UserContext } from './context';
 
 import { Typography, Button } from '@mui/material';
-import { WebDSService } from '@webds/service';
 
 interface ButtonProps {
     title?: any;
@@ -12,7 +11,6 @@ interface ButtonProps {
     onStart: any;
     onProgress: any;
     onMessage: any;
-    service: WebDSService;
 }
 
 declare global {
@@ -163,7 +161,7 @@ export default function ButtonProgram(props: ButtonProps) {
         let path = '';
         for (let value of ['ihex', 'hex']) {
             try {
-                let files = await props.service.packrat.cache.addPackratFiles([value], Number(packrat!));
+                let files = await webdsService.packrat.cache.addPackratFiles([value], Number(packrat!));
                 console.log(files);
                 path = packrat + "/PR" + packrat
                 if (value == 'ihex')

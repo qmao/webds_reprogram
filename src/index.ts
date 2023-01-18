@@ -23,6 +23,8 @@ namespace Attributes {
   export const rank = 10;
 }
 
+export let webdsService: WebDSService;
+
 /**
  * Initialization data for the reprogram extension.
  */
@@ -42,6 +44,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
       console.log('JupyterLab extension reprogram is activated!');
     }
 
+	webdsService = service;
+
     let widget: WebDSWidget;
     const { commands, shell } = app;
     const command = Attributes.command;
@@ -52,7 +56,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
 	  icon: extensionProgramIcon,
       execute: () => {
         if (!widget || widget.isDisposed) {
-          let content = new ShellWidget(Attributes.id, service);
+          let content = new ShellWidget(Attributes.id);
 
           widget = new WebDSWidget<ShellWidget>({ content });
           widget.id = Attributes.id;

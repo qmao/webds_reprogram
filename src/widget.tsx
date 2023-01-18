@@ -1,7 +1,7 @@
 import { ReactWidget } from '@jupyterlab/apputils';
 import React, { useEffect, useContext, useState, useRef } from 'react';
 import { UserContext } from './context';
-import { requestAPI } from './handler';
+import { requestAPI, webdsService } from './local_exports';
 
 import {
     TextField, Box, Stack, Paper, Avatar,
@@ -15,7 +15,6 @@ import DehazeOutlinedIcon from '@mui/icons-material/DehazeOutlined';
 import { ThemeProvider } from "@mui/material/styles";
 import ButtonProgram from './program'
 import FileList from './filelist'
-import { WebDSService } from '@webds/service';
 import { green } from '@mui/material/colors';
 
 import { Canvas } from "./widget/mui_extensions/Canvas";
@@ -65,7 +64,6 @@ type SeverityType = 'error' | 'info' | 'success' | 'warning';
 
 export default function VerticalTabs(
     props: {
-		service: WebDSService;
     }
 ) {
     const [packrat, setPackrat] = useState("3318382");
@@ -316,7 +314,7 @@ export default function VerticalTabs(
         }
     }
 
-	const webdsTheme = props.service.ui.getWebDSTheme();
+    const webdsTheme = webdsService.ui.getWebDSTheme();
 
     function ShowContent() {
         return (
@@ -407,7 +405,7 @@ export default function VerticalTabs(
     function ShowControl() {
         return (
                 <ButtonProgram title="Program" list={filelist} error={packratError}
-                    onStart={onStart} onProgress={onProgress} onMessage={onMessage} service={props.service} />
+                    onStart={onStart} onProgress={onProgress} onMessage={onMessage} />
         );
     }
 
@@ -445,23 +443,19 @@ export default function VerticalTabs(
 * A Counter Lumino Widget that wraps a CounterComponent.
 */
 export class ShellWidget extends ReactWidget {
-	service: WebDSService | null = null;
     id: string;
     /**
     * Constructs a new CounterWidget.
     */
-    constructor(id: string, service: WebDSService) {
+    constructor(id: string) {
         super();
         this.id = id;
-        this.addClass('jp-webds-widget');
-        console.log("TabPanelUiWidget is created!!!");
-		this.service = service;
     }
 
     render(): JSX.Element {
         return (
             <div id={this.id + "_component"}>
-                <VerticalTabs service={this.service!} />
+                <VerticalTabs />
             </div>
         );
     }
