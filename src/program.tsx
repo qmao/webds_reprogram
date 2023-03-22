@@ -32,6 +32,20 @@ export default function ButtonProgram(props: ButtonProps) {
         message: string;
     }
 
+
+    const donwloadConfigJson = async () => {
+        let ret: any;
+        if (webdsService.pinormos !== undefined) {
+            const external = webdsService.pinormos.isExternal();
+            if (external) {
+                ret = await webdsService.packrat.cache.addPublicConfig();
+            } else {
+                ret = await webdsService.packrat.cache.addPrivateConfig();
+            }
+            console.log("download config file:", ret)
+        }
+    }
+
     const eventHandler = (event: any) => {
         let obj = JSON.parse(event.data);
         //console.log(obj)
@@ -40,6 +54,7 @@ export default function ButtonProgram(props: ButtonProps) {
             setProgress(obj.progress);
         }
         if (obj.status && obj.message) {
+            donwloadConfigJson();
             setProgramStatus(false, obj.status == 'success', JSON.stringify(obj.message));
         }
     }
