@@ -43,6 +43,7 @@ export default function ButtonProgram(props: ButtonProps) {
                 ret = await webdsService.packrat.cache.addPrivateConfig();
             }
             console.log("download config file:", ret)
+            webdsService.pinormos.checkConnection();
         }
     }
 
